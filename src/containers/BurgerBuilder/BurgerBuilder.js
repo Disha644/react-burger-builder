@@ -1,12 +1,24 @@
 import React, { Component, Fragment } from 'react';
-import BurgerIngredient from '../../components/BurgerIngredient/BurgerIngredient'
+
+import Burger from '../../components/Burger/Burger';
+import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
 class BurgerBuilder extends Component {
+    state = {
+        ingredients: {
+            salad: 0,
+            bacon: 0,
+            cheese: 0,
+            meat: 0,
+            aaloo: 0
+        }
+    }
+
     render() {
         return (
             <Fragment>
-                <BurgerIngredient />
-                <div>Build Controls</div>
+                <Burger ingredients={this.state.ingredients} />
+                <BuildControls ingredients={this.state.ingredients} />
             </Fragment>
         );
     }
