@@ -1,0 +1,32 @@
+.Button {
+  background-color: white;
+  border: 1px solid white;
+  outline: none;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  font: inherit;
+  border-radius: 3px;
+}
+
+.Button:first-of-type {
+  margin-left: 0;
+}
+
+.Danger {
+  color: red;
+}
+
+.Success {
+  color: green;
+}
+
+.Danger:hover,
+.Danger:active {
+  background-color: rgb(255, 236, 236);
+}
+
+.Success:hover,
+.Success:active {
+  background-color: rgb(231, 253, 231);
+}
