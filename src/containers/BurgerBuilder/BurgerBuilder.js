@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 
 import Burger from '../../components/Burger/Burger';
-import BuildControls from '../../components/BuildControls/BuildControls';
+import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
-import OrderSummary from '../../components/OrderSummary/OrderSummary';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
 const INGREDIENT_PRICES = {
     salad: 5,
@@ -93,6 +93,7 @@ class BurgerBuilder extends Component {
                 <Modal show={this.state.purchasing} disappear={this.purchaseCancelHandler}>
                     <OrderSummary
                         ingredients={this.state.ingredients}
+                        price={this.state.totalPrice}
                         cancel={this.purchaseCancelHandler}
                         continue={this.purchaseContinueHandler}
                     />

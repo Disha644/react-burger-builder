@@ -9,7 +9,7 @@
   top: 30%;
   z-index: 500;
   box-sizing: border-box;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 @media (min-width: 600px) {
