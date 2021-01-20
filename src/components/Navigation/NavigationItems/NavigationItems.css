@@ -3,24 +3,13 @@
   padding: 0;
   list-style: none;
   display: flex;
+  flex-direction: column;
   align-items: center;
   height: 100%;
 }
 
-.NavigationItems li {
-  display: flex;
-  align-items: center;
-  margin: 0;
-  box-sizing: border-box;
-  height: 100%;
-}
-
-.NavigationItems a {
-  color: white;
-  text-decoration: none;
-  padding: 16px 10px;
-  box-sizing: border-box;
-  border-bottom: 4px solid transparent;
-  display: block;
-  height: 100%;
+@media (min-width: 542px) {
+  .NavigationItems {
+    flex-direction: row;
+  }
 }
