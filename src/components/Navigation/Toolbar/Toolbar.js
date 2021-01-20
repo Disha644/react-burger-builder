@@ -5,7 +5,8 @@ import Menu from '../Menu/Menu';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import classes from './Toolbar.css';
 
-const toolbar = (props) => {
+const Toolbar = (props) => {
+
     return (
         <header className={classes.Toolbar}>
             <Menu toggle={props.toggle} />
@@ -19,4 +20,4 @@ const toolbar = (props) => {
     );
 }
 
-export default toolbar;
+export default Toolbar;
