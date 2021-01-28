@@ -18,7 +18,13 @@ const INGREDIENT_PRICES = {
 
 class BurgerBuilder extends Component {
     state = {
-        ingredients: null,
+        ingredients: {
+            salad: 0,
+            bacon: 0,
+            cheese: 0,
+            meat: 0,
+            aaloo: 0
+        },
         totalPrice: 20,
         purchasable: false,
         purchasing: false,
@@ -26,16 +32,16 @@ class BurgerBuilder extends Component {
         error: null
     }
 
-    componentDidMount() {
+    /*componentDidMount() {
+        console.log(this.props);
         axios.get('/ingredients.json')
             .then(response => {
-                this.setState({ ingredients: response.data })
-                //console.log(response);
+                this.setState({ ingredients: response.data });
             })
-            .catch(err => {
-                this.setState({ error: err })
-            })
-    }
+            .catch(error => {
+                this.setState({ error: true });
+            });
+    }*/
 
     updatePurchaseState = (ingredients) => {
         let sum = 0;
@@ -88,29 +94,17 @@ class BurgerBuilder extends Component {
 
     purchaseContinueHandler = () => {
 
-        this.setState({ loading: true });
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Disha Gupta',
-                address: {
-                    street: 'TestStreet 1',
-                    zipcode: '324011',
-                    country: 'India'
-                },
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
+        queryParams.push('price=' + this.state.totalPrice);
+        const queryString = queryParams.join('&');
 
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({ loading: false, purchasing: false });
-            })
-            .catch(err => {
-                this.setState({ loading: false, purchasing: false });
-            });
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString
+        });
 
     }
 
@@ -123,9 +117,9 @@ class BurgerBuilder extends Component {
 
         let orderSummary = null;
 
-        if (this.state.loading) {
+        /*if (this.state.loading) {
             orderSummary = <Spinner />
-        }
+        }*/
 
         let burger = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />
         if (this.state.ingredients) {
