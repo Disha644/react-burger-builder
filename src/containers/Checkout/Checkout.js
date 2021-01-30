@@ -18,7 +18,7 @@ class Checkout extends Component {
 
         for (let [key, value] of queryParams.entries()) {
             if (key === 'price') {
-                this.state.totalPrice = value
+                this.setState({ totalPrice: value })
             } else {
                 ingredients[key] = +value
             }
