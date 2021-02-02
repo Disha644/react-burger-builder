@@ -30,3 +30,10 @@
 .Success:active {
   background-color: rgb(231, 253, 231);
 }
+
+.Danger:disabled,
+.Success:disabled {
+  background-color: rgb(221, 216, 216);
+  color: rgb(104, 101, 101);
+  cursor: not-allowed;
+}
