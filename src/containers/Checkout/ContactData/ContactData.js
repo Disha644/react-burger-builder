@@ -98,6 +98,10 @@ class ContactData extends Component {
         loading: false
     }
 
+    componentDidMount() {
+        console.log(this.props.price);
+    }
+
     checkValidity = (value, rules) => {
 
         let isValid = true;
@@ -152,14 +156,7 @@ class ContactData extends Component {
             customerDetails: formData
         }
 
-        axios.post('/orders.json', order)
-            .then((response) => {
-                this.setState({ loading: false })
-                if (response) this.props.history.push('/orders')
-            })
-            .catch((err) => {
-                this.setState({ loading: false })
-            })
+
 
     }
 
@@ -191,7 +188,7 @@ class ContactData extends Component {
                 <Button btnType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
             </form>
 
-        )
+        );
 
         if (this.state.loading) {
             form = <Spinner />
@@ -209,8 +206,8 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        price: state.totalPrice
+        ings: state.burger.ingredients,
+        price: state.burger.totalPrice
     }
 }
 

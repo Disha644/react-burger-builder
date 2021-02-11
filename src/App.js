@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Layout from './containers/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
@@ -13,9 +14,10 @@ class App extends Component {
       <BrowserRouter>
         <Layout >
           <Switch>
-            <Route path='/checkout' component={Checkout} />
+            {this.props.ings ? <Route path='/checkout' component={Checkout} /> : null}
             <Route path='/orders' component={Orders} />
-            <Route path='/' component={BurgerBuilder} />
+            <Route exact path='/' component={BurgerBuilder} />
+            <Redirect to='/' />
           </Switch>
         </Layout>
       </BrowserRouter>
@@ -24,4 +26,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    ings: state.burger.ingredients,
+  }
+}
+
+export default connect(mapStateToProps)(App);

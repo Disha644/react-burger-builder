@@ -31,12 +31,13 @@ class Orders extends Component {
     render() {
         return (
             <div>
-                {this.state.loading ? <Spinner /> : this.state.orders.map(order => (
-                    <Order
-                        key={order.id}
-                        ingredients={order.ingredients}
-                        price={order.price} />
-                ))}
+                {this.state.loading ? <Spinner /> : (this.state.orders.length > 0 ?
+                    this.state.orders.map(order => (
+                        <Order
+                            key={order.id}
+                            ingredients={order.ingredients}
+                            price={order.price} />
+                    )) : <p style={{ textAlign: 'center' }}>No orders placed yet!!</p>)}
             </div>
         );
     }
