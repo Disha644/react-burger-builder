@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionsTypes';
+import { updateObject } from '../utility'
 
 const initialState = {
     ingredients: null,
@@ -14,56 +15,39 @@ const INGREDIENT_PRICES = {
     aaloo: 10
 }
 
+const addIngredient = (state, action) => {
+    const updatedIngs = updateObject(state.ingredients, { [action.name]: state.ingredients[action.name] + 1 });
+    return updateObject(state, { ingredients: updatedIngs, totalPrice: state.totalPrice + INGREDIENT_PRICES[action.name] });
+
+}
+
+const removeIngredient = (state, action) => {
+    const Ings = updateObject(state.ingredients, { [action.name]: state.ingredients[action.name] + 1 });
+    return updateObject(state, { ingredients: Ings, totalPrice: state.totalPrice + INGREDIENT_PRICES[action.name] });
+}
+
+const setIngredients = (state, action) => {
+    const ings = action.ingredients;
+    const updatedIngredients = {
+        salad: ings.salad,
+        bacon: ings.bacon,
+        cheese: ings.cheese,
+        meat: ings.meat,
+        aaloo: ings.aaloo
+    }
+    return updateObject(state, { ingredients: updatedIngredients, totalPrice: 20, error: false });
+}
+
+
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
 
-        case actionTypes.ADD_INGREDIENT:
-            return {
-                ...state,
-                //because no deep cloning
-                ingredients: {
-                    ...state.ingredients,
-                    [action.name]: state.ingredients[action.name] + 1
-                },
-                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.name]
-            };
-
-        case actionTypes.REMOVE_INGREDIENT:
-            return {
-                ...state,
-                ingredients: {
-                    ...state.ingredients,
-                    [action.name]: state.ingredients[action.name] - 1
-                },
-                totalPrice: state.totalPrice - INGREDIENT_PRICES[action.name]
-            }
-
-        case actionTypes.SET_INGREDIENTS:
-
-            const ings = action.ingredients;
-            const updatedIngs = {
-                salad: ings.salad,
-                bacon: ings.bacon,
-                cheese: ings.cheese,
-                meat: ings.meat,
-                aaloo: ings.aaloo
-            }
-
-            return {
-                ...state,
-                ingredients: updatedIngs,
-                totalPrice: 20,
-                error: false
-            }
-
-        case actionTypes.LOADING_INGREDIENTS_FAILED:
-            return {
-                ...state,
-                error: true
-            }
-
-        default:
-            return state;
+        case actionTypes.ADD_INGREDIENT: return addIngredient(state, action);
+        case actionTypes.REMOVE_INGREDIENT: return removeIngredient(state, action);
+        case actionTypes.SET_INGREDIENTS: return setIngredients(state, action);
+        case actionTypes.LOADING_INGREDIENTS_FAILED: return updateObject(state, { error: true });
+        default: return state;
     }
 };
 
