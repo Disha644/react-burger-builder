@@ -8,15 +8,16 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import { initIngredients, addIngredient, removeIngredient } from '../../store/actions/index';
+import { initIngredients, addIngredient, removeIngredient, purchaseInit } from '../../store/actions/index';
 
 
 class BurgerBuilder extends Component {
     state = {
-        purchasing: false
+        purchasing: false,
     }
 
     componentDidMount() {
+        this.props.onPurchaseInit();
         this.props.onInitIngredients();
     }
 
@@ -96,7 +97,8 @@ const mapStateToProps = state => {
     return {
         ings: state.burger.ingredients,
         price: state.burger.totalPrice,
-        error: state.burger.error
+        error: state.burger.error,
+        purchased: state.order.purchased
     }
 }
 
@@ -104,7 +106,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onInitIngredients: () => dispatch(initIngredients()),
         onAddIngredient: (ingName) => dispatch(addIngredient(ingName)),
-        onRemoveIngredient: (ingName) => dispatch(removeIngredient(ingName))
+        onRemoveIngredient: (ingName) => dispatch(removeIngredient(ingName)),
+        onPurchaseInit: () => dispatch(purchaseInit())
     }
 }
 
