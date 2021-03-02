@@ -8,13 +8,15 @@ import './index.css';
 import App from './App';
 import burgerReducer from './store/reducers/burger';
 import orderReducer from './store/reducers/order';
+import authReducer from './store/reducers/auth';
 import reportWebVitals from './reportWebVitals';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const reducer = combineReducers({
   burger: burgerReducer,
-  order: orderReducer
+  order: orderReducer,
+  auth: authReducer
 })
 
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
