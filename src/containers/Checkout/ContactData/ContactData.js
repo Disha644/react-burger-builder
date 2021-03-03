@@ -9,6 +9,7 @@ import { purchaseBurger } from '../../../store/actions/index';
 import axios from '../../../axios-orders';
 import classes from './ContactData.css'
 
+
 class ContactData extends Component {
 
     state = {
@@ -158,7 +159,7 @@ class ContactData extends Component {
             price: this.props.price,
             customerDetails: formData
         }
-        this.props.onOrderBurger(order);
+        this.props.onOrderBurger(order, this.props.token);
     }
 
     render() {
@@ -209,13 +210,14 @@ const mapStateToProps = state => {
     return {
         ings: state.burger.ingredients,
         price: state.burger.totalPrice,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOrderBurger: (order) => dispatch(purchaseBurger(order))
+        onOrderBurger: (order, token) => dispatch(purchaseBurger(order, token))
     }
 }
 

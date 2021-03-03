@@ -10,13 +10,10 @@ import { fetchOrders } from '../../store/actions/index';
 class Orders extends Component {
 
     componentDidMount() {
-
-        this.props.onFetchOrders();
-        //console.log('mounting');
+        this.props.onFetchOrders(this.props.token);
     }
 
     render() {
-        //console.log('render', this.props.loading, this.props.orders);
         return (
             <div>
                 {this.props.loading ? <Spinner /> : (this.props.orders.length > 0 ?
@@ -35,13 +32,13 @@ const mapStateToProps = state => {
     return {
         orders: state.order.orders,
         loading: state.order.loading,
-        mounted: state.order.mounted
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchOrders: () => dispatch(fetchOrders())
+        onFetchOrders: (token) => dispatch(fetchOrders(token))
     }
 }
 

@@ -6,7 +6,6 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import classes from './Toolbar.css';
 
 const Toolbar = (props) => {
-
     return (
         <header className={classes.Toolbar}>
             <Menu toggle={props.toggle} />
@@ -14,7 +13,7 @@ const Toolbar = (props) => {
                 <Logo />
             </div>
             <nav className={classes.DesktopOnly}>
-                <NavigationItems />
+                <NavigationItems isAuth={props.isAuth} />
             </nav>
         </header>
     );

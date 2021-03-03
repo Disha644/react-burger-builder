@@ -1,6 +1,6 @@
 .Order {
   box-sizing: border-box;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(236, 232, 232);
   box-shadow: 0 2px 3px #eee;
   width: 80%;
   max-width: 700px;
