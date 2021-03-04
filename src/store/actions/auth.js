@@ -22,6 +22,13 @@ export const authFailed = (err) => {
     }
 }
 
+export const authSetRedirectPath = (path) => {
+    return {
+        type: actionTypes.AUTH_SET_REDIRECT_PATH,
+        path: path
+    }
+}
+
 export const authLogout = () => {
     return {
         type: actionTypes.AUTH_LOGOUT

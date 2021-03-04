@@ -8,8 +8,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import { initIngredients, addIngredient, removeIngredient, purchaseInit } from '../../store/actions/index';
-
+import { initIngredients, addIngredient, removeIngredient, purchaseInit, authSetRedirectPath } from '../../store/actions/index';
 
 class BurgerBuilder extends Component {
     state = {
@@ -30,7 +29,12 @@ class BurgerBuilder extends Component {
     }
 
     purchaseHandler = () => {
-        this.setState({ purchasing: true });
+        if (this.props.isAuthenticated) {
+            this.setState({ purchasing: true });
+        } else {
+            this.props.onSetAuthRedirectPath('/checkout')
+            this.props.history.push('/authetication')
+        }
     }
 
     purchaseCancelHandler = () => {
@@ -66,6 +70,7 @@ class BurgerBuilder extends Component {
                         price={this.props.price}
                         purchasable={this.updatePurchaseState(this.props.ings)}
                         ordered={this.purchaseHandler}
+                        isAuthenticated={this.props.isAuthenticated}
                     />
                 </Fragment>
             );
@@ -98,7 +103,7 @@ const mapStateToProps = state => {
         ings: state.burger.ingredients,
         price: state.burger.totalPrice,
         error: state.burger.error,
-        purchased: state.order.purchased
+        isAuthenticated: state.auth.token !== null
     }
 }
 
@@ -107,7 +112,8 @@ const mapDispatchToProps = dispatch => {
         onInitIngredients: () => dispatch(initIngredients()),
         onAddIngredient: (ingName) => dispatch(addIngredient(ingName)),
         onRemoveIngredient: (ingName) => dispatch(removeIngredient(ingName)),
-        onPurchaseInit: () => dispatch(purchaseInit())
+        onPurchaseInit: () => dispatch(purchaseInit()),
+        onSetAuthRedirectPath: (path) => dispatch(authSetRedirectPath(path))
     }
 }
 

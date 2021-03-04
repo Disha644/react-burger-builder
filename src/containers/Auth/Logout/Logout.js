@@ -7,7 +7,9 @@ import { authLogout } from '../../../store/actions/index';
 class Logout extends Component {
 
     componentDidMount() {
+        //console.log(this.props);
         this.props.onLogout();
+        //this.props.history.replace('/');
     }
 
     render() {

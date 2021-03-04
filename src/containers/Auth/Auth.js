@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import { auth } from '../../store/actions/index';
+import { auth, authSetRedirectPath } from '../../store/actions/index';
 import classes from './Auth.css'
 
 class Auth extends Component {
@@ -66,6 +67,12 @@ class Auth extends Component {
         }
         return isValid;
 
+    }
+
+    componentDidMount() {
+        if (!this.props.building && this.props.authRedirectPath !== '/') {
+            this.props.onSetAuthRedirectPath();
+        }
     }
 
     inputChangedHandler = (event, control) => {
@@ -131,8 +138,14 @@ class Auth extends Component {
             errorMessage = <p><strong>{this.props.error.message}</strong></p>
         }
 
+        let redirectUser = null
+        if (this.props.isAuthenticated) {
+            redirectUser = <Redirect to={this.props.authRedirectPath} />
+        }
+
         return (
             <div className={classes.Auth}>
+                {redirectUser}
                 {errorMessage}
                 {form}
                 <Button btnType="Danger" clicked={this.switchAuthModeHandler}>
@@ -146,13 +159,17 @@ class Auth extends Component {
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        error: state.auth.error
+        error: state.auth.error,
+        isAuthenticated: state.auth.token !== null,
+        authRedirectPath: state.auth.authRedirectPath,
+        building: state.burger.building
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password, isSignUp) => dispatch(auth(email, password, isSignUp))
+        onAuth: (email, password, isSignUp) => dispatch(auth(email, password, isSignUp)),
+        onSetAuthRedirectPath: () => dispatch(authSetRedirectPath('/'))
     }
 }
 
