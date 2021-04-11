@@ -6,6 +6,7 @@ import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { auth, authSetRedirectPath } from '../../store/actions/index';
+import { updateObject, checkValidity } from '../../shared/utility';
 import classes from './Auth.css'
 
 class Auth extends Component {
@@ -45,30 +46,6 @@ class Auth extends Component {
         isSignup: true
     }
 
-    checkValidity = (value, rules) => {
-
-        let isValid = true;
-        if (!rules) {
-            return true;
-        }
-        if (rules.required)
-            isValid = isValid && value.trim() !== '';
-        if (rules.minLen)
-            isValid = isValid && value.length >= rules.minLen;
-        if (rules.maxLen)
-            isValid = isValid && value.length <= rules.maxLen;
-        if (rules.isEmail) {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = pattern.test(value) && isValid
-        }
-        if (rules.isNumeric) {
-            const pattern = /^\d+$/;
-            isValid = pattern.test(value) && isValid
-        }
-        return isValid;
-
-    }
-
     componentDidMount() {
         if (!this.props.building && this.props.authRedirectPath !== '/') {
             this.props.onSetAuthRedirectPath();
@@ -77,15 +54,17 @@ class Auth extends Component {
 
     inputChangedHandler = (event, control) => {
 
-        const updatedControls = {
-            ...this.state.controls,
-            [control]: {
-                ...this.state.controls[control],
-                value: event.target.value,
-                valid: this.checkValidity(event.target.value, this.state.controls[control].validation),
-                touched: true
-            }
-        }
+        const updatedControl = updateObject(this.state.controls[control], {
+            value: event.target.value,
+            valid: checkValidity(event.target.value, this.state.controls[control].validation),
+            touched: true
+        });
+
+
+        const updatedControls = updateObject(this.state.controls, {
+            [control]: updatedControl
+        });
+
         this.setState({ controls: updatedControls });
     }
 

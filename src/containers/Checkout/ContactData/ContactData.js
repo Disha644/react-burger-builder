@@ -8,6 +8,7 @@ import WithErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import { purchaseBurger } from '../../../store/actions/index';
 import axios from '../../../axios-orders';
 import classes from './ContactData.css'
+import { updateObject, checkValidity } from '../../../shared/utility';
 
 
 class ContactData extends Component {
@@ -100,48 +101,23 @@ class ContactData extends Component {
         formIsValid: false
     }
 
-    checkValidity = (value, rules) => {
-
-        let isValid = true;
-        if (!rules) {
-            return true;
-        }
-        if (rules.required)
-            isValid = isValid && value.trim() !== '';
-        if (rules.minLen)
-            isValid = isValid && value.length >= rules.minLen;
-        if (rules.maxLen)
-            isValid = isValid && value.length <= rules.maxLen;
-        if (rules.isEmail) {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = pattern.test(value) && isValid
-        }
-        if (rules.isNumeric) {
-            const pattern = /^\d+$/;
-            isValid = pattern.test(value) && isValid
-        }
-        return isValid;
-
-    }
-
     valueChangedHandler = (event, key) => {
 
-        const updatedForm = { ...this.state.orderForm };
-        /*
-        This is being done because {...this.state.orderForm} perform shallow cloning the json object of orderForm will be cloned but that of name, email... or that of element config won't be cloned. updatedForm[key] will still point to orderForm[key] so we are cloning that too so orignal one gets updated using set state only
-        */
-        const updatedElement = { ...updatedForm[key] };
-        updatedElement.value = event.target.value;
-        updatedElement.valid = this.checkValidity(updatedElement.value, updatedElement.validation);
-        updatedElement.touched = true;
-        updatedForm[key] = updatedElement;
+        const updatedElement = updateObject(this.state.orderForm[key], {
+            value: event.target.value,
+            valid: checkValidity(event.target.value, this.state.orderForm[key].validation),
+            touched: true
+        });
+
+        const updatedForm = updateObject(this.state.orderForm, {
+            [key]: updatedElement
+        });
 
         let formIsValid = true;
         for (let key in updatedForm) {
             //console.log(key + " " + updatedForm[key].valid)
             formIsValid = formIsValid && updatedForm[key].valid
         }
-
         this.setState({ orderForm: updatedForm, formIsValid: formIsValid });
 
     }
